@@ -1,4 +1,5 @@
 import ezdxf
+from PIL import Image
 
 from Matrix import *
 
@@ -74,8 +75,10 @@ class Generator:
 
 
 if __name__ == '__main__':
-    DATA = "H-1234-5678"
+    DATA = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
     _encoded_data = pylibdmtx.encode(DATA.encode('utf-8'))
+    img = Image.frombytes('RGB', (_encoded_data.width, _encoded_data.height), _encoded_data.pixels)
+    img.save("generated.png")
     _matrix = Matrix(width=_encoded_data.width, height=_encoded_data.height)
     m = load_from_encoded_data(_encoded_data)
     m2 = m.conv()
