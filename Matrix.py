@@ -1,5 +1,7 @@
 from pylibdmtx import pylibdmtx
 
+from Point import Point
+
 WHITE_VALUE = 255
 BLACK_VALUE = 0
 
@@ -10,6 +12,8 @@ class Matrix:
         self.__height = height
 
         self.__matrix = [[1 for _ in range(self.__width)] for _ in range(self.__height)]
+
+    """ OVERRIDES ---------------------------------------------------------------------------------------------------"""
 
     def __getitem__(self, item):
         return self.__matrix[item]
@@ -23,6 +27,8 @@ class Matrix:
             string += str(row) + '\n'
 
         return string
+
+    """ METHODS -----------------------------------------------------------------------------------------------------"""
 
     def conv(self):
         """
@@ -82,6 +88,22 @@ class Matrix:
             return min_white_size
 
         return min(min_white_size, min_black_size)
+
+    def generate_points(self):
+        """
+        Generates a point for each black value
+        :return:
+        """
+        points = list()  # type: list[Point]
+
+        for row in range(self.__height):
+            for col in range(self.__width):
+                if self.__matrix[row][col] == BLACK_VALUE:
+                    points.append(Point(row, col))
+
+        return points
+
+    """ PROPERTIES --------------------------------------------------------------------------------------------------"""
 
     @property
     def width(self):
