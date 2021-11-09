@@ -99,7 +99,7 @@ class Matrix:
         for row in range(self.__height):
             for col in range(self.__width):
                 if self.__matrix[row][col] == BLACK_VALUE:
-                    points.append(Point(row, col))
+                    points.append(Point(col, self.__height - row - 1))
 
         return points
 
