@@ -1,12 +1,15 @@
 from pylibdmtx import pylibdmtx
 
+WHITE_VALUE = 255
+BLACK_VALUE = 0
+
 
 class Matrix:
     def __init__(self, width, height):
         self.__width = width
         self.__height = height
 
-        self.__matrix = [[1 for w in range(self.__width)] for h in range(self.__height)]
+        self.__matrix = [[1 for _ in range(self.__width)] for _ in range(self.__height)]
 
     def __getitem__(self, item):
         return self.__matrix[item]
@@ -21,13 +24,64 @@ class Matrix:
 
         return string
 
-    def conv(self, kernel_size: int):
+    def conv(self):
         """
         Applies a convolution-like method to the matrix. Each sector is 5x5 pixels. Returns a matrix containing
         only the sectors
-        :param kernel_size:
         :return:
         """
+        kernel_size = self.get_sector_size()
+
+        if kernel_size == 0:
+            return ValueError("Kernel size cannot be zero")
+
+        if self.height % kernel_size != 0 or self.width % kernel_size != 0:
+            return ValueError("Size or width not multiple of kernel size")
+
+        res = Matrix(width=self.width // kernel_size, height=self.height // kernel_size)
+        for row in range(res.height):
+            for col in range(res.width):
+                res.__matrix[row][col] = self.__matrix[5 * row][5 * col]
+
+        return res
+
+    def get_sector_size(self):
+        min_white_size = self.__width
+        min_black_size = self.__width
+
+        for i, row in enumerate(self.__matrix):
+            whites = 0
+            blacks = 0
+            prev_pixel = row[0]  # start pixel in the row
+            for pixel in row:
+                # increment the color values accordingly
+                if pixel == WHITE_VALUE:
+                    whites += 1
+                if pixel == BLACK_VALUE:
+                    blacks += 1
+
+                if pixel != prev_pixel:  # color change
+                    if pixel == BLACK_VALUE:  # white -> black
+                        if whites < min_white_size:
+                            min_white_size = whites
+
+                        whites = 0
+
+                    if pixel == WHITE_VALUE:  # black -> white
+                        if blacks < min_black_size:
+                            min_black_size = blacks
+
+                        blacks = 0
+
+                prev_pixel = pixel
+
+        if min_white_size == 0:
+            return min_black_size
+
+        if min_black_size == 0:
+            return min_white_size
+
+        return min(min_white_size, min_black_size)
 
     @property
     def width(self):
@@ -87,4 +141,8 @@ if __name__ == '__main__':
     _encoded_data = pylibdmtx.encode(DATA.encode('utf-8'))
     _matrix = Matrix(width=_encoded_data.width, height=_encoded_data.height)
     m = load_from_encoded_data(_encoded_data)
+    print(m.get_sector_size())
     print(m)
+    m2 = m.conv()
+    print(m2)
+    pass
