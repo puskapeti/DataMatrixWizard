@@ -1,6 +1,6 @@
 from pylibdmtx import pylibdmtx
 
-from Point import Point
+from Sector import Sector
 
 WHITE_VALUE = 255
 BLACK_VALUE = 0
@@ -89,19 +89,36 @@ class Matrix:
 
         return min(min_white_size, min_black_size)
 
-    def generate_points(self):
+    def generate_sectors(self):
         """
-        Generates a point for each black value
+        Generates a sector for each black value
         :return:
         """
-        points = list()  # type: list[Point]
+        sectors = list()  # type: list[Sector]
 
         for row in range(self.__height):
             for col in range(self.__width):
-                if self.__matrix[row][col] == BLACK_VALUE:
-                    points.append(Point(col, self.__height - row - 1))
 
-        return points
+                if self.__matrix[row][col] == BLACK_VALUE:
+                    sector = Sector(col, self.__height - row - 1)  # generate sector
+
+                    """ check if surrounding sectors are black"""
+                    if col > 0 and self.__matrix[row][col - 1] == BLACK_VALUE:
+                        sector.left = True
+
+                    if col < self.__width - 1 and self.__matrix[row][col + 1] == BLACK_VALUE:
+                        sector.right = True
+
+                    if row > 0 and self.__matrix[row - 1][col] == BLACK_VALUE:
+                        sector.above = True
+
+                    if row < self.__height - 1 and self.__matrix[row + 1][col] == BLACK_VALUE:
+                        sector.below = True
+
+                    # append the sector to the list
+                    sectors.append(sector)
+
+        return sectors
 
     """ PROPERTIES --------------------------------------------------------------------------------------------------"""
 
