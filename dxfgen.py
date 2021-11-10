@@ -16,7 +16,12 @@ class Generator:
     OUTLINE_FULL = "FULL"
     SECTOR_WIDTH = 2
 
-    def __init__(self, matrix: Matrix, hatch_angle=0, hatch_density=10):
+    def __init__(self, matrix: Matrix, hatch_angle=0, hatch_density=9):
+        """
+        :param matrix: input matrix containing the data
+        :param hatch_angle: angle of the hatches. 0 -> 45°. Positive is CCW
+        :param hatch_density: At powers of 3 the lines are continuous
+        """
         self.__matrix = matrix
         self.__hatch_angle = hatch_angle
         self.__hatch_density = hatch_density
@@ -141,7 +146,7 @@ class Generator:
         outline_full = self.__doc.blocks.new(name=Generator.OUTLINE_FULL)
 
         hatch = hatch_block.add_hatch()
-        hatch.set_pattern_fill('ANSI31', scale=1 / self.__hatch_density)
+        hatch.set_pattern_fill('ANSI31', scale=float(Generator.SECTOR_WIDTH / self.__hatch_density))
         hatch.set_pattern_angle(self.__hatch_angle)
         dist = Generator.SECTOR_WIDTH / 2
         hatch.paths.add_polyline_path(
@@ -204,5 +209,5 @@ if __name__ == '__main__':
 
     print(m2)
 
-    g = Generator(matrix=m2, hatch_angle=0, hatch_density=10)
+    g = Generator(matrix=m2, hatch_angle=0, hatch_density=81)
     g.generate()
