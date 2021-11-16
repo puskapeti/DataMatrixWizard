@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
-    <height>361</height>
+    <width>392</width>
+    <height>389</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>445</width>
-    <height>445</height>
+    <width>392</width>
+    <height>389</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -26,13 +26,13 @@
   <widget class="QWidget" name="centralwidget">
    <property name="maximumSize">
     <size>
-     <width>480</width>
-     <height>619</height>
+     <width>640</width>
+     <height>640</height>
     </size>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,3">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="leftMargin">
        <number>10</number>
       </property>
@@ -61,10 +61,65 @@
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <item>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Oszlop</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinbox_row"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Sor</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinbox_column"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_reload">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Újratöltés</string>
+          </property>
+         </widget>
+        </item>
         <item>
          <widget class="QPushButton" name="button_generate_dm">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Datamatrix generálás</string>
+           <string>Generálás</string>
           </property>
          </widget>
         </item>
@@ -93,6 +148,9 @@
         <property name="text">
          <string/>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
      </layout>
@@ -108,8 +166,6 @@
  </widget>
  <tabstops>
   <tabstop>line_edit_file_path</tabstop>
-  <tabstop>button_open_file</tabstop>
-  <tabstop>button_generate_dm</tabstop>
  </tabstops>
  <resources>
   <include location="../resources.qrc"/>

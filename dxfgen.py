@@ -31,12 +31,15 @@ class Generator:
         else:
             self.__sector_width = 0
 
-        self.__doc = ezdxf.new("R2010", setup=True)  # creates a new DXF 2010 drawing
+        self.__doc = None
 
         self.__hatch = None
 
     def generate(self):
         """Generates the datamatrix and saves it as a dxf file"""
+
+        self.__doc = ezdxf.new("R2010", setup=True)  # creates a new DXF 2010 drawing
+
         if self.__matrix is None:
             raise Warning("Generator matrix is None")
 
