@@ -35,7 +35,7 @@ class Generator:
 
         self.__hatch = None
 
-    def generate(self):
+    def generate(self, filename="generated.dxf"):
         """Generates the datamatrix and saves it as a dxf file"""
 
         self.__doc = ezdxf.new("R2010", setup=True)  # creates a new DXF 2010 drawing
@@ -141,7 +141,7 @@ class Generator:
             }
         )
 
-        self.__doc.saveas('generated.dxf')
+        self.__doc.saveas(filename)
 
     @staticmethod
     def generate_png(data: str) -> str:

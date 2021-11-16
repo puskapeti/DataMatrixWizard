@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog
 import Matrix
 from Settings import Settings
 from dxfgen import Generator
+from preferences import Preferences
 from mainUI import Ui_MainWindow
 
 
@@ -21,6 +22,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.__settings = Settings()  # init settings
         self.__generator = Generator()  # init dxf generator
         self.__data = None  # type: None or str
+        self.__preferences = Preferences(parent=None)
 
         """Initializing ui elements"""
         self.spinbox_column.setValue(self.__settings.excel_column)
@@ -32,6 +34,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.button_generate_dm.clicked.connect(self.generate_callback)
         self.line_edit_file_path.textChanged.connect(self.line_edit_changed_callback)
         self.spinbox_row.valueChanged.connect(self.spinbox_changed)
+        self.action_exit.triggered.connect(self.close)
+        self.action_preferences.triggered.connect(self.open_preferences)
 
     """ CALLBACKS --------------------------------------------------------------------------------------------------"""
 
@@ -72,11 +76,16 @@ class Window(QMainWindow, Ui_MainWindow):
             self.statusbar.showMessage("Nincs adat beolvasva", msecs=-1)
             return
 
+        dxf_name = self.__settings.dxf_name
+        dxf_path = self.__settings.dxf_path
         encoded_data = pylibdmtx.pylibdmtx.encode(self.__data.encode('utf-8'))
         self.__generator.matrix = Matrix.load_from_encoded_data(encoded_data)
-        self.__generator.generate()
+        self.__generator.generate(filename=dxf_path + '/' + dxf_name)
 
-        self.statusbar.showMessage("DataMatrix generálva")
+        self.statusbar.showMessage(f"DataMatrix generálva {dxf_path + '/' + dxf_name}-ként")
+
+    def open_preferences(self):
+        self.__preferences.show()
 
     """ METHODS ----------------------------------------------------------------------------------------------------"""
 

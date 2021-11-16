@@ -158,9 +158,37 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>392</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuF_jl">
+    <property name="title">
+     <string>Fájl</string>
+    </property>
+    <addaction name="action_preferences"/>
+    <addaction name="action_exit"/>
+   </widget>
+   <addaction name="menuF_jl"/>
+  </widget>
   <action name="actionExcel_megnyit_sa">
    <property name="text">
     <string>Excel megnyitása</string>
+   </property>
+  </action>
+  <action name="action_preferences">
+   <property name="text">
+    <string>Beállítások</string>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="text">
+    <string>Kilépés</string>
    </property>
   </action>
  </widget>
