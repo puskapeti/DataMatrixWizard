@@ -14,7 +14,7 @@ class Generator:
     OUTLINE_TOP = "TOP"
     OUTLINE_BOTTOM = "BOTTOM"
     OUTLINE_FULL = "FULL"
-    SECTOR_WIDTH = 2
+    FINAL_SIZE = 8
 
     def __init__(self, matrix: Matrix, hatch_angle=0, hatch_density=9):
         """
@@ -25,6 +25,8 @@ class Generator:
         self.__matrix = matrix
         self.__hatch_angle = hatch_angle
         self.__hatch_density = hatch_density
+
+        self.__sector_width = Generator.FINAL_SIZE / self.__matrix.width
 
         self.__doc = ezdxf.new("R2010", setup=True)  # creates a new DXF 2010 drawing
 
@@ -41,7 +43,7 @@ class Generator:
 
         sectors = self.__matrix.generate_sectors()  # generate point coordinates from the matrix
 
-        sw = Generator.SECTOR_WIDTH
+        sw = self.__sector_width
 
         for sector in sectors:
             # add the hatch to the hatch layer
@@ -58,8 +60,7 @@ class Generator:
                 msp.add_blockref(
                     Generator.OUTLINE_FULL,
                     (sector.x * sw, sector.y * sw),
-                    dxfattribs=
-                    {
+                    dxfattribs={
                         'xscale': 1,
                         'yscale': 1,
                         'rotation': 0,
@@ -72,8 +73,7 @@ class Generator:
                     msp.add_blockref(
                         Generator.OUTLINE_TOP,
                         (sector.x * sw, sector.y * sw),
-                        dxfattribs=
-                        {
+                        dxfattribs={
                             'xscale': 1,
                             'yscale': 1,
                             'rotation': 0,
@@ -85,8 +85,7 @@ class Generator:
                     msp.add_blockref(
                         Generator.OUTLINE_BOTTOM,
                         (sector.x * sw, sector.y * sw),
-                        dxfattribs=
-                        {
+                        dxfattribs={
                             'xscale': 1,
                             'yscale': 1,
                             'rotation': 0,
@@ -98,8 +97,7 @@ class Generator:
                     msp.add_blockref(
                         Generator.OUTLINE_LEFT,
                         (sector.x * sw, sector.y * sw),
-                        dxfattribs=
-                        {
+                        dxfattribs={
                             'xscale': 1,
                             'yscale': 1,
                             'rotation': 0,
@@ -111,8 +109,7 @@ class Generator:
                     msp.add_blockref(
                         Generator.OUTLINE_RIGHT,
                         (sector.x * sw, sector.y * sw),
-                        dxfattribs=
-                        {
+                        dxfattribs={
                             'xscale': 1,
                             'yscale': 1,
                             'rotation': 0,
@@ -146,9 +143,9 @@ class Generator:
         outline_full = self.__doc.blocks.new(name=Generator.OUTLINE_FULL)
 
         hatch = hatch_block.add_hatch()
-        hatch.set_pattern_fill('ANSI31', scale=float(Generator.SECTOR_WIDTH / self.__hatch_density))
+        hatch.set_pattern_fill('ANSI31', scale=float(self.__sector_width / self.__hatch_density))
         hatch.set_pattern_angle(self.__hatch_angle)
-        dist = Generator.SECTOR_WIDTH / 2
+        dist = self.__sector_width / 2
         hatch.paths.add_polyline_path(
             [
                 (dist, dist),
@@ -209,5 +206,5 @@ if __name__ == '__main__':
 
     print(m2)
 
-    g = Generator(matrix=m2, hatch_angle=0, hatch_density=81)
+    g = Generator(matrix=m2, hatch_angle=0, hatch_density=20)
     g.generate()
