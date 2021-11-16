@@ -1,5 +1,3 @@
-from enum import Enum
-
 import ezdxf
 from PIL import Image
 
