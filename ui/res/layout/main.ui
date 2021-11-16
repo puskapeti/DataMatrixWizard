@@ -6,30 +6,111 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>640</height>
+    <width>445</width>
+    <height>361</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>445</width>
+    <height>445</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>DataMatrix Wizard</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../img/logo.png</normaloff>../img/logo.png</iconset>
+   <iconset resource="../resources.qrc">
+    <normaloff>:/img/logo</normaloff>:/img/logo</iconset>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
+  <widget class="QWidget" name="centralwidget">
+   <property name="maximumSize">
+    <size>
      <width>480</width>
-     <height>22</height>
-    </rect>
+     <height>619</height>
+    </size>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,3">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="line_edit_file_path"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="button_open_file">
+        <property name="text">
+         <string>Fájl megnyitása</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="button_generate_dm">
+          <property name="text">
+           <string>Datamatrix generálás</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_image">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExcel_megnyit_sa">
+   <property name="text">
+    <string>Excel megnyitása</string>
+   </property>
+  </action>
  </widget>
+ <tabstops>
+  <tabstop>line_edit_file_path</tabstop>
+  <tabstop>button_open_file</tabstop>
+  <tabstop>button_generate_dm</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

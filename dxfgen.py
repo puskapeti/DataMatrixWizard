@@ -14,7 +14,7 @@ class Generator:
     OUTLINE_FULL = "FULL"
     FINAL_SIZE = 8
 
-    def __init__(self, matrix: Matrix, hatch_angle=0, hatch_density=9):
+    def __init__(self, matrix: Matrix = None, hatch_angle=0, hatch_density=9):
         """
         :param matrix: input matrix containing the data
         :param hatch_angle: angle of the hatches. 0 -> 45°. Positive is CCW
@@ -23,14 +23,23 @@ class Generator:
         self.__matrix = matrix
         self.__hatch_angle = hatch_angle
         self.__hatch_density = hatch_density
+        self.__final_size = Generator.FINAL_SIZE
 
-        self.__sector_width = Generator.FINAL_SIZE / self.__matrix.width
+        if matrix is not None:
+            self.__sector_width = Generator.FINAL_SIZE / self.__matrix.width
+
+        else:
+            self.__sector_width = 0
 
         self.__doc = ezdxf.new("R2010", setup=True)  # creates a new DXF 2010 drawing
 
         self.__hatch = None
 
     def generate(self):
+        """Generates the datamatrix and saves it as a dxf file"""
+        if self.__matrix is None:
+            raise Warning("Generator matrix is None")
+
         msp = self.__doc.modelspace()  # adds modelspace
 
         # generate layers
@@ -131,6 +140,15 @@ class Generator:
 
         self.__doc.saveas('generated.dxf')
 
+    @staticmethod
+    def generate_png(data: str) -> str:
+        """Generates a datamatrix and saves it as a pdf file"""
+        encoded_data = pylibdmtx.encode(data.encode('utf-8'))
+        image = Image.frombytes('RGB', (encoded_data.width, encoded_data.height), encoded_data.pixels)
+        filename = 'data/preview.png'
+        image.save(filename)
+        return filename
+
     def __generate_blocks(self):
         hatch_block = self.__doc.blocks.new(name=Generator.HATCH_NAME)
 
@@ -158,14 +176,14 @@ class Generator:
             [
                 (-dist, dist),
                 (dist, dist)
-             ]
+            ]
         )
 
         outline_bottom.add_lwpolyline(
             [
                 (-dist, -dist),
                 (dist, -dist)
-             ]
+            ]
         )
 
         outline_left.add_lwpolyline(
@@ -191,6 +209,24 @@ class Generator:
                 (dist, dist)
             ]
         )
+
+    """ PROPERTIES ----------------------------------------------------------------------------------------------"""
+    @property
+    def matrix(self):
+        return self.__matrix
+
+    @matrix.setter
+    def matrix(self, value):
+        self.__matrix = value
+        self.__sector_width = Generator.FINAL_SIZE / self.__matrix.width
+
+    @property
+    def size(self):
+        return self.__final_size
+
+    @size.setter
+    def size(self, value):
+        self.__final_size = value
 
 
 if __name__ == '__main__':
