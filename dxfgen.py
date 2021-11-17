@@ -1,5 +1,9 @@
 import ezdxf
 from PIL import Image
+from ezdxf import recover
+from ezdxf.addons.drawing import matplotlib, RenderContext, Frontend
+from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
+from matplotlib import pyplot as plt
 
 from Matrix import *
 
@@ -145,8 +149,8 @@ class Generator:
         image = Image.frombytes('RGB', (encoded_data.width, encoded_data.height), encoded_data.pixels)
         filename = 'preview.png'
         image.save(filename)
-        return filename
 
+        return filename
 
     def __generate_blocks(self):
         hatch_block = self.__doc.blocks.new(name=Generator.HATCH_NAME)
@@ -156,6 +160,12 @@ class Generator:
         outline_left = self.__doc.blocks.new(name=Generator.OUTLINE_LEFT)
         outline_right = self.__doc.blocks.new(name=Generator.OUTLINE_RIGHT)
         outline_full = self.__doc.blocks.new(name=Generator.OUTLINE_FULL)
+
+        print("Generator: generating blocks with the following params")
+        print(f"Hatch density: {self.hatch_density}")
+        print(f"Hatch angle: 45 + {self.hatch_angle}")
+        print(f"Sector size: {self.__sector_width}")
+        print(f"Total size: {self.__final_size}")
 
         hatch = hatch_block.add_hatch()
         hatch.set_pattern_fill('ANSI31', scale=float(self.__sector_width / self.__hatch_density))
@@ -218,10 +228,8 @@ class Generator:
     @matrix.setter
     def matrix(self, value: Matrix):
         self.__matrix = value
-        if self.__final_size is None:
-            self.__sector_width = Generator.DEFAULT_SIZE / self.__matrix.width
-        else:
-            self.__sector_width = self.__final_size / self.__matrix.width
+
+        self.__sector_width = self.__final_size / self.__matrix.width
 
     @property
     def size(self):
@@ -233,7 +241,7 @@ class Generator:
 
     @property
     def hatch_angle(self):
-        return self.hatch_angle
+        return self.__hatch_angle
 
     @hatch_angle.setter
     def hatch_angle(self, value: float):

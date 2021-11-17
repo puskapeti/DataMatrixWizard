@@ -34,7 +34,6 @@ class Window(QMainWindow, Ui_MainWindow):
         self.line_edit_hatch_density.setText(str(self.__settings.hatch_density))
 
         self.label_image.setText('')
-        self.label_hatch_preview.setText('')
 
         """Connecting signals"""
         # buttons
@@ -129,7 +128,14 @@ class Window(QMainWindow, Ui_MainWindow):
         dxf_name = self.__settings.dxf_name
         dxf_path = self.__settings.dxf_path
         encoded_data = pylibdmtx.pylibdmtx.encode(self.__data.encode('utf-8'))
-        self.__generator.matrix = Matrix.load_from_encoded_data(encoded_data)
+        self.__generator.matrix = Matrix.load_from_encoded_data(encoded_data).conv()
+        try:
+            self.__generator.hatch_angle = float(self.line_edit_hatch_angle.text())
+            self.__generator.hatch_density = float(self.line_edit_hatch_density.text())
+
+        except ValueError:
+            pass
+
         self.__generator.generate(filename=dxf_path + '/' + dxf_name)
 
         self.statusbar.showMessage(f"DataMatrix generálva {dxf_path + '/' + dxf_name}-ként")
@@ -158,7 +164,8 @@ class Window(QMainWindow, Ui_MainWindow):
 
         return file_name
 
-    def __open_excel(self, filename: str) -> pandas.DataFrame:
+    @staticmethod
+    def __open_excel(filename: str) -> pandas.DataFrame:
         dataframe = pandas.read_excel(filename, sheet_name=0, header=None)  # type: pandas.DataFrame
         print(dataframe)
 
