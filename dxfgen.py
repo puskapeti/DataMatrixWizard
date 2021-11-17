@@ -148,7 +148,7 @@ class Generator:
         """Generates a datamatrix and saves it as a pdf file"""
         encoded_data = pylibdmtx.encode(data.encode('utf-8'))
         image = Image.frombytes('RGB', (encoded_data.width, encoded_data.height), encoded_data.pixels)
-        filename = 'data/preview.png'
+        filename = 'preview.png'
         image.save(filename)
         return filename
 

@@ -1,7 +1,7 @@
 import os
 
 from PyQt6 import QtGui
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QFileDialog
 
 from Settings import Settings
 from preferencesUI import Ui_preferences
@@ -22,6 +22,7 @@ class Preferences(QWidget, Ui_preferences):
         """Connect signals"""
         self.line_edit_dxf_name.textChanged.connect(self.line_edit_text_changed_callback)
         self.line_edit_dxf_path.textChanged.connect(self.line_edit_text_changed_callback)
+        self.button_browse_path.clicked.connect(self.button_browse_path_clicked_callback)
 
         """Adding focus handlers"""
         self.line_edit_dxf_name_fh = self.line_edit_dxf_name.focusOutEvent
@@ -38,11 +39,13 @@ class Preferences(QWidget, Ui_preferences):
         else:
             self.line_edit_dxf_path.setStyleSheet('color: red;')
 
-    def line_edit_text_focus_lost_callback(self):
-        dxf_name = self.line_edit_dxf_name.text()
+    def button_browse_path_clicked_callback(self):
+        dir_path = QFileDialog.getExistingDirectory()
 
-        if not dxf_name.endswith('.dxf'):
-            dxf_name += '.dxf'
+        if dir_path == '':
+            return
+
+        self.line_edit_dxf_path.setText(dir_path)
 
     def focus_handler(self, event):
         self.line_edit_dxf_name_fh(event)
@@ -54,5 +57,8 @@ class Preferences(QWidget, Ui_preferences):
     def closeEvent(self, a0: QtGui.QCloseEvent) -> None:
         # save the line edit values
         self.__settings.dxf_name = self.line_edit_dxf_name.text()
-        self.__settings.dxf_path = self.line_edit_dxf_path.text()
+        dxf_path = self.line_edit_dxf_path.text()
+        if os.path.exists(dxf_path):
+            self.__settings.dxf_path = dxf_path
+
         super().closeEvent(a0)

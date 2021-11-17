@@ -148,3 +148,6 @@ if __name__ == '__main__':
     window = Window()
     window.show()
     sys.exit(app.exec())
+
+    # TODO: display the loaded data
+    # TODO: rewrite the load data method to only load the excel file once
