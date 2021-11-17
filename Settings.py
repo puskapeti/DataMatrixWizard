@@ -15,6 +15,12 @@ DXF_NAME = "DXFName"
 DXF_NAME_DEF_VAL = "generated.dxf"
 DXF_PATH = "DXFPath"
 DXF_PATH_DEF_VAL = "generated"
+DXF_SIZE = "DXFSize"
+DXF_SIZE_DEF_VAL = 8
+HATCH_ANGLE = "hatchAngle"
+HATCH_ANGLE_DEF_VAL = 0
+HATCH_DENSITY = "hatchDensity"
+HATCH_DENSITY_DEF_VAL = 27
 
 
 class Settings:
@@ -46,7 +52,7 @@ class Settings:
         return self.__settings.value(EXCEL_COLUMN, EXCEL_COLUMN_DEF_VAL)
 
     @excel_column.setter
-    def excel_column(self, value):
+    def excel_column(self, value: int):
         self.__settings.setValue(EXCEL_COLUMN, value)
 
     @property
@@ -64,3 +70,27 @@ class Settings:
     @dxf_path.setter
     def dxf_path(self, value: str):
         self.__settings.setValue(DXF_PATH, value)
+
+    @property
+    def dxf_size(self):
+        return self.__settings.value(DXF_SIZE, DXF_SIZE_DEF_VAL)
+
+    @dxf_size.setter
+    def dxf_size(self, value: float):
+        self.__settings.setValue(DXF_SIZE, value)
+
+    @property
+    def hatch_angle(self):
+        return self.__settings.value(HATCH_ANGLE, HATCH_ANGLE_DEF_VAL)
+
+    @hatch_angle.setter
+    def hatch_angle(self, value: float):
+        self.__settings.setValue(HATCH_ANGLE, value)
+
+    @property
+    def hatch_density(self):
+        return self.__settings.value(HATCH_DENSITY, HATCH_DENSITY_DEF_VAL)
+
+    @hatch_density.setter
+    def hatch_density(self, value: float):
+        self.__settings.setValue(HATCH_DENSITY, value)
