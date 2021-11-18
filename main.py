@@ -40,6 +40,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.line_edit_hatch_density.setText(str(self.__settings.hatch_density))
 
         self.label_image.setText('')
+        self.label_text_preview.setText('')
 
         """Connecting signals"""
         # buttons
@@ -192,12 +193,14 @@ class Window(QMainWindow, Ui_MainWindow):
     def __set_preview(self, data):
         if data is None:
             self.label_image.setText("Nem megfelelő oszlop/sor")
+            self.label_text_preview.setText('')
 
         else:
             preview = self.__generator.generate_png(data)
 
             pixmap = QPixmap(preview)
             self.label_image.setPixmap(pixmap)
+            self.label_text_preview.setText(data)
 
         self.label_image.setScaledContents(True)
 
