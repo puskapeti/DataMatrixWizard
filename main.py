@@ -1,3 +1,4 @@
+import ctypes
 import os.path
 import sys
 
@@ -15,9 +16,14 @@ from mainUI import Ui_MainWindow
 
 
 class Window(QMainWindow, Ui_MainWindow):
+    app_id = u'Lasram.DataMatrixWizard'
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+
+        self.setWindowIcon(QtGui.QIcon('ui/res/img/logo.png'))
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(Window.app_id)
 
         """Initializing variables"""
         self.__settings = Settings()  # init settings

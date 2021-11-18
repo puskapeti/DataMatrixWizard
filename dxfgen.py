@@ -1,9 +1,5 @@
 import ezdxf
 from PIL import Image
-from ezdxf import recover
-from ezdxf.addons.drawing import matplotlib, RenderContext, Frontend
-from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
-from matplotlib import pyplot as plt
 
 from Matrix import *
 
